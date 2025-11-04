@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I’m sorry</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Quicksand:wght@400;700&family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg1: #000000;
+  --bg2: #ffc9df;
+}
+*{box-sizing:border-box;}
+body {
+  margin:0;
+  background:var(--bg1);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+  transition:background 3s ease;
+  font-family:"Baloo 2", "Quicksand", sans-serif;
+}
+h1 {font-size:2.4rem; margin:0 0 0.3rem 0;}
+button {
+  margin-top:1rem;
+  padding:1rem 2rem;
+  font-size:1.25rem;
+  border:none;
+  background:white;
+  color:black;
+  cursor:pointer;
+  border-radius:0.65rem;
+}
+#poem{
+  margin-top:1.7rem;
+  font-size:1.45rem;
+  line-height:1.65;
+  max-width:28rem;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+#fakePlayer {
+  font-family:"Montserrat", sans-serif;
+  background:rgba(255,255,255,0.2);
+  border-radius:12px;
+  padding:0.9rem 1.5rem;
+  margin-top:2rem;
+  display:flex;
+  align-items:center;
+  gap:1.2rem;
+  opacity:0;
+  transition:opacity 1.5s ease;
+}
+#fakePlayer .label{
+  font-size:0.75rem;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  opacity:.8;
+}
+#fakePlayer .trackTitle{font-size:1rem;font-weight:600;margin-top:0.2rem;}
+#fakePlayer .artist{font-size:0.9rem;opacity:.85;}
+.cover {
+  width:60px;height:60px;border-radius:8px;
+  background:url('https://tse2.mm.bing.net/th/id/OIP.RZnvl4t7mr98ESIdVZU4FQHaHR?rs=1&pid=ImgDetMain&o=7&rm=3') center/cover;
+}
+
+/* hearts */
+.heart {
+  position:fixed;
+  top:50%;
+  left:50%;
+  font-size:1.8rem;
+  pointer-events:none;
+  animation:floatUp 1.9s ease forwards;
+}
+@keyframes floatUp {
+  0% {transform:translate(-50%, -50%) scale(1);opacity:1;}
+  80% {opacity:1;}
+  100% {transform:translate(-50%, -140%) scale(1.8);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<h1>Hey, kushy.</h1>
+<p>I’m sorry.</p>
+
+<button id="go">Click here for something.</button>
+
+<div id="poem"></div>
+
+<div id="fakePlayer">
+  <div class="cover"></div>
+  <div>
+    <div class="label">Now Playing</div>
+    <div class="trackTitle">Dedicated To The One I Love</div>
+    <div class="artist">The Mamas & The Papas</div>
+  </div>
+</div>
+
+<audio id="song" src="kushy.mp3"></audio>
+
+<script>
+const poemLines = [
+"I mess up sometimes, cause I'm a little dumb",
+"cause with years of shit my heart's been a little numb",
+"but you stepped in my life, like a ray of sunshine, no-",
+"you're the whole sun indeed, so much happier I've become",
+"now I've made some mistakes, but I've fixed them in here",
+"I know you're mad, but I'll make it less severe",
+"so let's go out, get some chilli garlic noodles, and some beer",
+"and I'll show you just how much I love you, my dear"
+];
+
+const poem = document.getElementById('poem');
+const fakePlayer = document.getElementById('fakePlayer');
+const song = document.getElementById('song');
+const goBtn = document.getElementById('go');
+
+function burstHearts(){
+  for(let i=0;i<9;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText="❤️";
+    h.style.left=(50 + (Math.random()*40 -20))+"%";
+    h.style.top= (50 + (Math.random()*20 -10))+"%";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),2000);
+  }
+}
+
+goBtn.addEventListener('click',()=>{
+  document.body.style.background='var(--bg2)';
+  song.play();
+  burstHearts();
+
+  poem.innerHTML="";
+  poem.style.opacity = 1;
+
+  let i=0;
+  function nextLine(){
+    if(i < poemLines.length){
+      const line=document.createElement("div");
+      line.style.opacity=0;
+      line.textContent=poemLines[i];
+      poem.appendChild(line);
+
+      requestAnimationFrame(()=>{line.style.opacity=1});
+
+      i++;
+      setTimeout(nextLine,1500);
+    } else {
+      fakePlayer.style.opacity=1;
+    }
+  }
+  nextLine();
+});
+</script>
+
+</body>
+</html>
