@@ -138,7 +138,7 @@ function burstHearts(){
 
 goBtn.addEventListener('click',()=>{
   document.body.style.background='var(--bg2)';
-  song.play();
+  setTimeout(()=>song.play(),200); // tiny delay helps autoplay reliability
   burstHearts();
 
   poem.innerHTML="";
@@ -149,13 +149,14 @@ goBtn.addEventListener('click',()=>{
     if(i < poemLines.length){
       const line=document.createElement("div");
       line.style.opacity=0;
+      line.style.transition="opacity 1s ease"; //← smooth fade
       line.textContent=poemLines[i];
       poem.appendChild(line);
 
-      requestAnimationFrame(()=>{line.style.opacity=1});
+      setTimeout(()=>{ line.style.opacity=1 },50); // tiny delay to trigger transition
 
       i++;
-      setTimeout(nextLine,1500);
+      setTimeout(nextLine,1600); // slightly more time between lines
     } else {
       fakePlayer.style.opacity=1;
     }
@@ -164,5 +165,7 @@ goBtn.addEventListener('click',()=>{
 });
 </script>
 
+
 </body>
 </html>
+
